@@ -24,10 +24,14 @@ module Lita
             end
           end
 
-          on :message, /.+/ do |input|
-            next if input.user.nick == bot.nick
-            source = Source.new(input.user.nick, input.channel.name)
-            message = Message.new(lita_robot, input.message, source)
+          on :message, /.+/ do |m|
+            user_name = m.user.nick
+            channel_name = m.channel.name if m.channel?
+
+            source = Source.new(user_name, channel_name)
+            message = Message.new(lita_robot, m.message, source)
+            message.command! unless channel_name
+
             lita_robot.receive(message)
           end
         end
