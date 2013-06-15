@@ -16,8 +16,6 @@ module Lita
             config.realname = "Lita"
 
             Lita.config.adapter.each do |key, value|
-              next if key == :name
-
               if config.class::KnownOptions.include?(key)
                 config.send("#{key}=", value)
               end
