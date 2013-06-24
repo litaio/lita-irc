@@ -31,6 +31,10 @@ The attributes listed below are either fundamental to making the bot work, or ha
 * `password` (String) - The password for Lita's IRC account. Default: `nil`.
 * `realname` (String) - The "real name" field for Lita's IRC account. Default: `"Lita"`.
 
+### Lita-specific attributes
+
+* `log_level` (Symbol) - Sets the log level for Cinch's loggers. By default, Cinch's loggers are disabled. Default: `nil`.
+
 **Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapter.nick` is ignored.
 
 ### Example
