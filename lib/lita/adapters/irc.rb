@@ -17,6 +17,7 @@ module Lita
         normalize_config
         configure_cinch
         configure_logging
+        register_plugin
       end
 
       def run
@@ -39,7 +40,6 @@ module Lita
       def configure_cinch
         Lita.logger.debug("Configuring Cinch.")
         cinch.configure do |config|
-          config.plugins.plugins = [CinchPlugin]
           Lita.config.adapter.each do |key, value|
             if config.class::KnownOptions.include?(key)
               config.send("#{key}=", value)
@@ -53,6 +53,14 @@ module Lita
           cinch.loggers.level = Lita.config.adapter.log_level
         else
           cinch.loggers.clear
+        end
+      end
+
+      def register_plugin
+        cinch.configure do |config|
+          config.plugins.prefix = nil
+          config.plugins.plugins = [CinchPlugin]
+          config.plugins.options[CinchPlugin] = { robot: robot }
         end
       end
     end
