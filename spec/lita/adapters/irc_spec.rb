@@ -35,6 +35,12 @@ describe Lita::Adapters::IRC do
     end
   end
 
+  it "registers a plugin with Cinch" do
+    expect(subject.cinch.config.plugins.plugins).to include(
+      described_class::CinchPlugin
+    )
+  end
+
   it "turns Cinch's logging on if config.adapter.log_level is set" do
     Lita.config.adapter.log_level = :debug
     expect(subject.cinch.loggers).not_to be_empty

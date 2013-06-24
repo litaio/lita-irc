@@ -1,6 +1,7 @@
-require "lita"
-
 require "cinch"
+
+require "lita"
+require "lita/adapters/irc/cinch_plugin"
 
 module Lita
   module Adapters
@@ -38,7 +39,7 @@ module Lita
       def configure_cinch
         Lita.logger.debug("Configuring Cinch.")
         cinch.configure do |config|
-          config.nick = Lita.config.robot.name
+          config.plugins.plugins = [CinchPlugin]
           Lita.config.adapter.each do |key, value|
             if config.class::KnownOptions.include?(key)
               config.send("#{key}=", value)
