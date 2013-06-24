@@ -29,9 +29,9 @@ The attributes listed below are either fundamental to making the bot work, or ha
 
 * `user` (String) - The username for Lita's IRC account. Default: `"Lita"".
 * `password` (String) - The password for Lita's IRC account. Default: `nil`.
-* `real_name` (String) - The "real name" field for Lita's IRC account. Default: `"Lita"`.
+* `realname` (String) - The "real name" field for Lita's IRC account. Default: `"Lita"`.
 
-**Note: `config.robot.name` is used as Lita's IRC nickname. `config.adapter.nick` is ignored.
+**Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapter.nick` is ignored.
 
 ### Example
 
@@ -42,7 +42,7 @@ Lita.configure do |config|
   config.adapter.server = "irc.freenode.net"
   config.adapter.channels = ["#litabot"]
   config.adapter.user = "Lita"
-  config.adapter.real_name = "Lita"
+  config.adapter.realname = "Lita"
   config.adapter.password = "secret"
 end
 ```
