@@ -1,16 +1,20 @@
 require "spec_helper"
 
-describe Lita::Adapters::IRC do
+describe Lita::Adapters::IRC, lita: true do
+  let(:robot) { double("Lita::Robot") }
+
   subject { described_class.new(robot) }
 
   before do
-    Lita.config.adapter.server = "irc.example.com"
-    Lita.config.adapter.channels = "#lita"
-    Lita.config.adapter.user = "litabot"
-    Lita.config.adapter.password = "secret"
-    Lita.config.adapter.realname = "Lita the Robot"
-    Lita.config.adapter.nick = "NotLita"
-    Lita.config.adapter.max_reconnect_delay = 123
+    Lita.configure do |config|
+      config.adapter.server = "irc.example.com"
+      config.adapter.channels = "#lita"
+      config.adapter.user = "litabot"
+      config.adapter.password = "secret"
+      config.adapter.realname = "Lita the Robot"
+      config.adapter.nick = "NotLita"
+      config.adapter.max_reconnect_delay = 123
+    end
   end
 
   it "registers with Lita" do
@@ -18,7 +22,7 @@ describe Lita::Adapters::IRC do
   end
 
   it "requires a server and channels" do
-    Lita.instance_variable_set(:@config, nil)
+    Lita.clear_config
     expect(Lita.logger).to receive(:fatal).with(/server, channels/)
     expect { subject }.to raise_error(SystemExit)
   end
