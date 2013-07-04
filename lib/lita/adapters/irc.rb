@@ -25,6 +25,13 @@ module Lita
         cinch.start
       end
 
+      def set_topic(target, topic)
+        room = target.room
+        channel = Cinch::Channel.new(target.room, cinch)
+        Lita.logger.debug("Setting topic for channel #{room}: #{topic}")
+        channel.topic = topic
+      end
+
       def shut_down
         Lita.logger.info("Disconnecting from IRC.")
         cinch.quit

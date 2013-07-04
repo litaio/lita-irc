@@ -57,6 +57,19 @@ describe Lita::Adapters::IRC, lita: true do
     end
   end
 
+  describe "#set_topic" do
+    it "sets a new topic for the room" do
+      source = double("Lita::Source", room: "#foo")
+      channel = double("Cinch::Channel")
+      expect(Cinch::Channel).to receive(:new).with(
+        "#foo",
+        subject.cinch
+      ).and_return(channel)
+      expect(channel).to receive(:topic=).with("Topic")
+      subject.set_topic(source, "Topic")
+    end
+  end
+
   describe "#shut_down" do
     it "disconnects from IRC" do
       expect(subject.cinch).to receive(:quit)
