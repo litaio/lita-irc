@@ -25,6 +25,16 @@ module Lita
         cinch.start
       end
 
+      def send_messages(target, strings)
+        if target.room
+          channel = Cinch::Channel.new(target.room, cinch)
+          strings.each { |s| channel.msg(s) }
+        else
+          user = Cinch::User.new(target.user.name, cinch)
+          strings.each { |s| user.msg(s) }
+        end
+      end
+
       def set_topic(target, topic)
         room = target.room
         channel = Cinch::Channel.new(target.room, cinch)

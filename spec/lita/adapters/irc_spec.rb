@@ -57,6 +57,33 @@ describe Lita::Adapters::IRC, lita: true do
     end
   end
 
+  describe "#send_messages" do
+    it "sends messages to rooms" do
+      source = double("Lita::Source", room: "#foo")
+      channel = double("Cinch::Channel")
+      allow(Cinch::Channel).to receive(:new).with(
+        "#foo",
+        subject.cinch
+      ).and_return(channel)
+      expect(channel).to receive(:msg).with("Hello!")
+      expect(channel).to receive(:msg).with("How are you?")
+      subject.send_messages(source, ["Hello!", "How are you?"])
+    end
+
+    it "sends messages to users" do
+      user = double("Lita::User", name: "Carl")
+      source = double("Lita::Source", room: nil, user: user)
+      user = double("Cinch::User")
+      allow(Cinch::User).to receive(:new).with(
+        "Carl",
+        subject.cinch
+      ).and_return(user)
+      expect(user).to receive(:msg).with("Hello!")
+      expect(user).to receive(:msg).with("How are you?")
+      subject.send_messages(source, ["Hello!", "How are you?"])
+    end
+  end
+
   describe "#set_topic" do
     it "sets a new topic for the room" do
       source = double("Lita::Source", room: "#foo")
