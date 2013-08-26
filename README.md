@@ -1,6 +1,6 @@
 # lita-irc
 
-[![Build Status](https://travis-ci.org/jimmycuadra/lita-irc.png)](https://travis-ci.org/jimmycuadra/lita-irc)
+[![Build Status](https://travis-ci.org/jimmycuadra/lita-irc.png?branch=master)](https://travis-ci.org/jimmycuadra/lita-irc)
 [![Code Climate](https://codeclimate.com/github/jimmycuadra/lita-irc.png)](https://codeclimate.com/github/jimmycuadra/lita-irc)
 [![Coverage Status](https://coveralls.io/repos/jimmycuadra/lita-irc/badge.png)](https://coveralls.io/r/jimmycuadra/lita-irc)
 
