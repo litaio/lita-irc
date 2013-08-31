@@ -16,6 +16,13 @@ describe Lita::Adapters::IRC::CinchPlugin do
       action?: false
     ).as_null_object
   end
+  let(:invite_m) do
+    double(
+      "Cinch::Message",
+      channel: double("Cinch::Channel"),
+      user: double("Cinch::User", nick: "Carl")
+    )
+  end
 
   before do
     allow(subject).to receive(:config).and_return(
@@ -56,6 +63,22 @@ describe Lita::Adapters::IRC::CinchPlugin do
       allow(robot).to receive(:receive)
       expect(message).to receive(:command!)
       subject.execute(m)
+    end
+  end
+
+  describe "#on_invite" do
+    it "joins the room if the invite came from an admin" do
+      allow(subject).to receive(:user_by_nick).and_return(user)
+      allow(Lita::Authorization).to receive(
+        :user_is_admin?
+      ).with(user).and_return(true)
+      expect(invite_m.channel).to receive(:join)
+      subject.on_invite(invite_m)
+    end
+
+    it "ignores the invite if it didn't come from an admin" do
+      expect(invite_m.channel).not_to receive(:join)
+      subject.on_invite(invite_m)
     end
   end
 end

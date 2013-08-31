@@ -7,6 +7,7 @@ module Lita
         include Cinch::Plugin
 
         match /.*/
+        listen_to :invite, method: :on_invite
 
         def execute(m)
           body = get_body(m)
@@ -14,6 +15,11 @@ module Lita
           message = Message.new(robot, body, source)
           message.command! unless source.room
           dispatch(message)
+        end
+
+        def on_invite(m)
+          user = user_by_nick(m.user.nick)
+          m.channel.join if Lita::Authorization.user_is_admin?(user)
         end
 
         private
