@@ -7,6 +7,7 @@ module Lita
         include Cinch::Plugin
 
         match /.*/
+        listen_to :connect, method: :on_connect
         listen_to :invite, method: :on_invite
 
         def execute(m)
@@ -15,6 +16,10 @@ module Lita
           message = Message.new(robot, body, source)
           message.command! unless source.room
           dispatch(message)
+        end
+
+        def on_connect(m)
+          robot.trigger(:connected)
         end
 
         def on_invite(m)

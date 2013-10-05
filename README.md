@@ -51,6 +51,10 @@ Lita.configure do |config|
 end
 ```
 
+## Events
+
+The IRC adapter will trigger the `:connected` and `:disconnected` events when the robot has connected and disconnected from IRC, respectively. There is no payload data for either event.
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)

@@ -66,6 +66,13 @@ describe Lita::Adapters::IRC::CinchPlugin do
     end
   end
 
+  describe "#on_connect" do
+    it "triggers a connected event on the robot" do
+      expect(robot).to receive(:trigger).with(:connected)
+      subject.on_connect(double)
+    end
+  end
+
   describe "#on_invite" do
     it "joins the room if the invite came from an admin" do
       allow(subject).to receive(:user_by_nick).and_return(user)

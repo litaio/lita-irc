@@ -45,6 +45,7 @@ module Lita
       def shut_down
         Lita.logger.info("Disconnecting from IRC.")
         cinch.quit
+        robot.trigger(:disconnected)
       end
 
       private

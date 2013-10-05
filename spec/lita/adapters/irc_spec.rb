@@ -100,6 +100,7 @@ describe Lita::Adapters::IRC, lita: true do
   describe "#shut_down" do
     it "disconnects from IRC" do
       expect(subject.cinch).to receive(:quit)
+      expect(robot).to receive(:trigger).with(:disconnected)
       subject.shut_down
     end
   end
