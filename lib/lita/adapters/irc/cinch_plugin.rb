@@ -49,7 +49,7 @@ MSG
         def get_source(m)
           user = user_by_nick(m.user.nick)
           channel = m.channel ? m.channel.name : nil
-          Source.new(user, channel)
+          Source.new(user: user, room: channel)
         end
 
         def robot
