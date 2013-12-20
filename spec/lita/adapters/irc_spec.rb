@@ -59,7 +59,7 @@ describe Lita::Adapters::IRC, lita: true do
 
   describe "#send_messages" do
     it "sends messages to rooms" do
-      source = double("Lita::Source", room: "#foo")
+      source = double("Lita::Source", room: "#foo", private_message?: false)
       channel = double("Cinch::Channel")
       allow(Cinch::Channel).to receive(:new).with(
         "#foo",
@@ -72,7 +72,7 @@ describe Lita::Adapters::IRC, lita: true do
 
     it "sends messages to users" do
       user = double("Lita::User", name: "Carl")
-      source = double("Lita::Source", room: nil, user: user)
+      source = double("Lita::Source", user: user, private_message?: true)
       user = double("Cinch::User")
       allow(Cinch::User).to receive(:new).with(
         "Carl",

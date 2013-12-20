@@ -26,12 +26,12 @@ module Lita
       end
 
       def send_messages(target, strings)
-        if target.room
-          channel = Cinch::Channel.new(target.room, cinch)
-          strings.each { |s| channel.msg(s) }
-        else
+        if target.private_message?
           user = Cinch::User.new(target.user.name, cinch)
           strings.each { |s| user.msg(s) }
+        else
+          channel = Cinch::Channel.new(target.room, cinch)
+          strings.each { |s| channel.msg(s) }
         end
       end
 
