@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "lita-irc"
-  spec.version       = "1.2.2"
+  spec.version       = "1.2.3"
   spec.authors       = ["Jimmy Cuadra"]
   spec.email         = ["jimmy@jimmycuadra.com"]
   spec.description   = %q{An IRC adapter for Lita.}
