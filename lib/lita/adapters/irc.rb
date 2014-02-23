@@ -14,7 +14,6 @@ module Lita
         super
 
         @cinch = Cinch::Bot.new
-        normalize_config
         configure_cinch
         configure_logging
         register_plugin
@@ -50,15 +49,23 @@ module Lita
 
       private
 
-      def normalize_config
-        Lita.config.adapter.channels = Array(Lita.config.adapter.channels)
-        Lita.config.adapter.nick = Lita.config.robot.name
+      def channels
+        Array(Lita.config.adapter.channels)
+      end
+
+      def nick
+        Lita.config.robot.name
       end
 
       def configure_cinch
         Lita.logger.debug("Configuring Cinch.")
         cinch.configure do |config|
+          config.channels = channels
+          config.nick = nick
+
           Lita.config.adapter.each do |key, value|
+            next if [:channels, :nick].include?(key.to_sym)
+
             if config.class::KnownOptions.include?(key)
               config.send("#{key}=", value)
             end
