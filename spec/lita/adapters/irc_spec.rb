@@ -48,6 +48,20 @@ describe Lita::Adapters::IRC, lita: true do
     expect(subject.cinch.loggers).not_to be_empty
   end
 
+  describe "#join" do
+    it "joins a channel" do
+      expect(subject.cinch).to receive(:join).with("#lita.io")
+      subject.join("#lita.io")
+    end
+  end
+
+  describe "#part" do
+    it "parts from a channel" do
+      expect(subject.cinch).to receive(:part).with("#lita.io")
+      subject.part("#lita.io")
+    end
+  end
+
   describe "#run" do
     it "connects to IRC" do
       expect(subject.cinch).to receive(:start)

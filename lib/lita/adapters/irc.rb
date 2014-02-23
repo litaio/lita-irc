@@ -24,6 +24,14 @@ module Lita
         cinch.start
       end
 
+      def join(room_id)
+        cinch.join(room_id)
+      end
+
+      def part(room_id)
+        cinch.part(room_id)
+      end
+
       def send_messages(target, strings)
         if target.private_message?
           user = Cinch::User.new(target.user.name, cinch)
