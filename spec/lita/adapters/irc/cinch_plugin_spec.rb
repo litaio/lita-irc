@@ -3,7 +3,8 @@ require "spec_helper"
 describe Lita::Adapters::IRC::CinchPlugin do
   subject { described_class.new(cinch) }
 
-  let(:robot) { double("Lita::Robot") }
+  let(:authorization) { instance_double("Lita::Authorization") }
+  let(:robot) { double("Lita::Robot", auth: authorization) }
   let(:cinch) { double("Cinch::Bot").as_null_object }
   let(:user) { double("Lita::User", name: "Carl") }
   let(:message) { double("Lita::Message", command!: nil, source: source) }
@@ -64,9 +65,13 @@ describe Lita::Adapters::IRC::CinchPlugin do
   end
 
   describe "#on_invite" do
+    before do
+      allow(authorization).to receive(:user_is_admin?).and_return(false)
+    end
+
     it "joins the room if the invite came from an admin" do
       allow(subject).to receive(:user_by_nick).and_return(user)
-      allow(Lita::Authorization).to receive(:user_is_admin?).with(user).and_return(true)
+      allow(authorization).to receive(:user_is_admin?).with(user).and_return(true)
       expect(invite_m.channel).to receive(:join)
       subject.on_invite(invite_m)
     end

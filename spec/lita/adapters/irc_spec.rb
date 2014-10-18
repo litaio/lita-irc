@@ -1,30 +1,26 @@
 require "spec_helper"
 
 describe Lita::Adapters::IRC, lita: true do
-  let(:robot) { instance_double("Lita::Robot") }
+  let(:robot) { Lita::Robot.new(registry) }
 
   subject { described_class.new(robot) }
 
   before do
-    Lita.configure do |config|
-      config.adapter.server = "irc.example.com"
-      config.adapter.channels = "#lita"
-      config.adapter.user = "litabot"
-      config.adapter.password = "secret"
-      config.adapter.realname = "Lita the Robot"
-      config.adapter.nick = "NotLita"
-      config.adapter.max_reconnect_delay = 123
+    registry.register_adapter(:irc, described_class)
+
+    registry.configure do |config|
+      config.adapters.irc.server = "irc.example.com"
+      config.adapters.irc.channels = "#lita"
+      config.adapters.irc.user = "litabot"
+      config.adapters.irc.password = "secret"
+      config.adapters.irc.realname = "Lita the Robot"
+      config.adapters.irc.nick = "NotLita"
+      config.adapters.irc.max_reconnect_delay = 123
     end
   end
 
   it "registers with Lita" do
     expect(Lita.adapters[:irc]).to eql(described_class)
-  end
-
-  it "requires a server and channels" do
-    Lita.clear_config
-    expect(Lita.logger).to receive(:fatal).with(/server, channels/)
-    expect { subject }.to raise_error(SystemExit)
   end
 
   it "configures Cinch" do
@@ -44,7 +40,7 @@ describe Lita::Adapters::IRC, lita: true do
   end
 
   it "turns Cinch's logging on if config.adapter.log_level is set" do
-    Lita.config.adapter.log_level = :debug
+    registry.config.adapters.irc.log_level = :debug
     expect(subject.cinch.loggers).not_to be_empty
   end
 

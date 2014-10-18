@@ -6,7 +6,20 @@ require "lita/adapters/irc/cinch_plugin"
 module Lita
   module Adapters
     class IRC < Adapter
-      require_configs :server, :channels
+      CONTROLLED_CONFIG_KEYS = %i(channels server user realname)
+      MANUALLY_ASSIGNED_KEYS = %i(channels nick)
+      EXTRA_CINCH_OPTIONS = Cinch::Configuration::Bot::KnownOptions - CONTROLLED_CONFIG_KEYS
+
+      # Required attributes
+      config :channels, type: [Array, String], required: true
+      config :server, type: String, required: true
+
+      # Optional attributes
+      config :user, type: String, default: "Lita"
+      config :realname, type: String, default: "Lita"
+      config :log_level, type: Symbol
+
+      EXTRA_CINCH_OPTIONS.each { |option| config option }
 
       attr_reader :cinch
 
@@ -58,42 +71,36 @@ module Lita
       private
 
       def channels
-        Array(Lita.config.adapter.channels)
-      end
-
-      def nick
-        Lita.config.robot.name
+        Array(robot.config.adapters.irc.channels)
       end
 
       def configure_cinch
         Lita.logger.debug("Configuring Cinch.")
-        cinch.configure do |config|
-          config.channels = channels
-          config.nick = nick
+        cinch.configure do |cinch_config|
+          cinch_config.channels = channels
+          cinch_config.nick = robot.config.robot.name
 
-          Lita.config.adapter.each do |key, value|
-            next if [:channels, :nick].include?(key.to_sym)
-
-            if config.class::KnownOptions.include?(key)
-              config.send("#{key}=", value)
-            end
+          Cinch::Configuration::Bot::KnownOptions.each do |key|
+            next if MANUALLY_ASSIGNED_KEYS.include?(key)
+            value = config.public_send(key)
+            cinch_config.public_send("#{key}=", value) unless value.nil?
           end
         end
       end
 
       def configure_logging
-        if Lita.config.adapter.log_level
-          cinch.loggers.level = Lita.config.adapter.log_level
+        if config.log_level
+          cinch.loggers.level = config.log_level
         else
           cinch.loggers.clear
         end
       end
 
       def register_plugin
-        cinch.configure do |config|
-          config.plugins.prefix = nil
-          config.plugins.plugins = [CinchPlugin]
-          config.plugins.options[CinchPlugin] = { robot: robot }
+        cinch.configure do |cinch_config|
+          cinch_config.plugins.prefix = nil
+          cinch_config.plugins.plugins = [CinchPlugin]
+          cinch_config.plugins.options[CinchPlugin] = { robot: robot }
         end
       end
     end

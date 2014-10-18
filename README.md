@@ -16,7 +16,7 @@ gem "lita-irc"
 
 ## Configuration
 
-All attributes set on `config.adapter` will be passed on to the underlying [Cinch](https://github.com/cinchrb/cinch) robot. The documentation for [Cinch's options](http://rubydoc.info/github/cinchrb/cinch/file/docs/bot_options.md) detail all of them.
+lita-irc has configuration attributes for all the underlying [Cinch](https://github.com/cinchrb/cinch) robot's options. The documentation for [Cinch's options](http://rubydoc.info/github/cinchrb/cinch/file/docs/bot_options.md) detail all of them.
 
 The attributes listed below are either fundamental to making the bot work, or have defaults provided by Lita that take precedence over Cinch's defaults.
 
@@ -35,7 +35,7 @@ The attributes listed below are either fundamental to making the bot work, or ha
 
 * `log_level` (Symbol) - Sets the log level for Cinch's loggers. By default, Cinch's loggers are disabled. Default: `nil`.
 
-**Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapter.nick` is ignored.
+**Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapters.irc.nick` is ignored.
 
 ### Example
 
@@ -43,11 +43,11 @@ The attributes listed below are either fundamental to making the bot work, or ha
 Lita.configure do |config|
   config.robot.name = "Lita"
   config.robot.adapter = :irc
-  config.adapter.server = "irc.freenode.net"
-  config.adapter.channels = ["#litabot"]
-  config.adapter.user = "Lita"
-  config.adapter.realname = "Lita"
-  config.adapter.password = "secret"
+  config.adapters.irc.server = "irc.freenode.net"
+  config.adapters.irc.channels = ["#litabot"]
+  config.adapters.irc.user = "Lita"
+  config.adapters.irc.realname = "Lita"
+  config.adapters.irc.password = "secret"
 end
 ```
 

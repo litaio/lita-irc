@@ -24,7 +24,7 @@ module Lita
 
         def on_invite(m)
           user = user_by_nick(m.user.nick)
-          m.channel.join if Lita::Authorization.user_is_admin?(user)
+          m.channel.join if robot.auth.user_is_admin?(user)
         end
 
         private
