@@ -6,20 +6,20 @@ require "lita/adapters/irc/cinch_plugin"
 module Lita
   module Adapters
     class IRC < Adapter
-      CONTROLLED_CONFIG_KEYS = %i(channels server user realname)
-      MANUALLY_ASSIGNED_KEYS = %i(channels nick)
-      EXTRA_CINCH_OPTIONS = Cinch::Configuration::Bot::KnownOptions - CONTROLLED_CONFIG_KEYS
-
       # Required attributes
       config :channels, type: [Array, String], required: true
       config :server, type: String, required: true
 
       # Optional attributes
       config :user, type: String, default: "Lita"
+      config :password, type: String
       config :realname, type: String, default: "Lita"
       config :log_level, type: Symbol
-
-      EXTRA_CINCH_OPTIONS.each { |option| config option }
+      config :cinch do
+        validate do |value|
+          "must be a callable object" unless value.respond_to?(:call)
+        end
+      end
 
       attr_reader :cinch
 
@@ -76,15 +76,17 @@ module Lita
 
       def configure_cinch
         Lita.logger.debug("Configuring Cinch.")
+
         cinch.configure do |cinch_config|
+          config.cinch.call(cinch_config) if config.cinch
+
           cinch_config.channels = channels
+          cinch_config.server = config.server
           cinch_config.nick = robot.config.robot.name
 
-          Cinch::Configuration::Bot::KnownOptions.each do |key|
-            next if MANUALLY_ASSIGNED_KEYS.include?(key)
-            value = config.public_send(key)
-            cinch_config.public_send("#{key}=", value) unless value.nil?
-          end
+          cinch_config.user = config.user if config.user
+          cinch_config.password = config.password if config.password
+          cinch_config.realname = config.realname if config.realname
         end
       end
 

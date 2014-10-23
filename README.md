@@ -16,26 +16,23 @@ gem "lita-irc"
 
 ## Configuration
 
-lita-irc has configuration attributes for all the underlying [Cinch](https://github.com/cinchrb/cinch) robot's options. The documentation for [Cinch's options](http://rubydoc.info/github/cinchrb/cinch/file/docs/bot_options.md) detail all of them.
-
-The attributes listed below are either fundamental to making the bot work, or have defaults provided by Lita that take precedence over Cinch's defaults.
-
 ### Required attributes
 
-* `server` (String) - The name of the IRC server Lita should connect to. Default: `nil`.
-* `channels` (Array<String>) - An array of channels Lita should join upon connection. Default: `nil`.
+* `server` (String) - The name of the IRC server Lita should connect to.
+* `channels` (Array<String>) - An array of channels Lita should join upon connection.
 
 ### Optional attributes
 
-* `user` (String) - The username for Lita's IRC account. Default: `"Lita"".
+* `user` (String) - The username for Lita's IRC account. Default: `"Lita"`.
 * `password` (String) - The password for Lita's IRC account. Default: `nil`.
 * `realname` (String) - The "real name" field for Lita's IRC account. Default: `"Lita"`.
-
-### Lita-specific attributes
-
 * `log_level` (Symbol) - Sets the log level for Cinch's loggers. By default, Cinch's loggers are disabled. Default: `nil`.
 
 **Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapters.irc.nick` is ignored.
+
+### Additional Cinch options
+
+Under the hood, lita-irc uses [Cinch](https://github.com/cinchrb/cinch) for the IRC connection. Cinch has several [configuration options](http://www.rubydoc.info/github/cinchrb/cinch/file/docs/bot_options.md) that you may want to set. To do this, assign a proc/lambda to `config.adapters.irc.cinch`. lita-irc will yield the Cinch configuration object to the proc, so you can configure it as you'd like. Note that for the options listed in the sections above, those values will overwrite anything set in the proc.
 
 ### Example
 
@@ -48,6 +45,9 @@ Lita.configure do |config|
   config.adapters.irc.user = "Lita"
   config.adapters.irc.realname = "Lita"
   config.adapters.irc.password = "secret"
+  config.adapters.irc.cinch = lambda do |cinch_config|
+    cinch_config.max_reconnect_delay = 123
+  end
 end
 ```
 

@@ -14,8 +14,10 @@ describe Lita::Adapters::IRC, lita: true do
       config.adapters.irc.user = "litabot"
       config.adapters.irc.password = "secret"
       config.adapters.irc.realname = "Lita the Robot"
-      config.adapters.irc.nick = "NotLita"
-      config.adapters.irc.max_reconnect_delay = 123
+      config.adapters.irc.cinch = lambda do |c|
+        c.nick = "NotLita"
+        c.sasl.username = "sasl username"
+      end
     end
   end
 
@@ -31,7 +33,7 @@ describe Lita::Adapters::IRC, lita: true do
       expect(config.user).to eq("litabot")
       expect(config.password).to eq("secret")
       expect(config.realname).to eq("Lita the Robot")
-      expect(config.max_reconnect_delay).to eq(123)
+      expect(config.sasl.username).to eq("sasl username")
     end
   end
 
