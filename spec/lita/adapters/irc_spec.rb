@@ -10,6 +10,7 @@ describe Lita::Adapters::IRC, lita: true do
 
     registry.configure do |config|
       config.adapters.irc.server = "irc.example.com"
+      config.adapters.irc.port = "7000"
       config.adapters.irc.channels = "#lita"
       config.adapters.irc.user = "litabot"
       config.adapters.irc.password = "secret"
@@ -29,6 +30,7 @@ describe Lita::Adapters::IRC, lita: true do
     subject.cinch.config.tap do |config|
       expect(config.nick).to eq("Lita")
       expect(config.server).to eq("irc.example.com")
+      expect(config.port).to eq("7000")
       expect(config.channels).to eq(["#lita"])
       expect(config.user).to eq("litabot")
       expect(config.password).to eq("secret")
