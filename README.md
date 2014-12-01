@@ -28,11 +28,11 @@ gem "lita-irc"
 * `realname` (String) - The "real name" field for Lita's IRC account. Default: `"Lita"`.
 * `log_level` (Symbol) - Sets the log level for Cinch's loggers. By default, Cinch's loggers are disabled. Default: `nil`.
 
-**Note**: `config.robot.name` is used as Lita's IRC nickname. `config.adapters.irc.nick` is ignored.
-
 ### Additional Cinch options
 
 Under the hood, lita-irc uses [Cinch](https://github.com/cinchrb/cinch) for the IRC connection. Cinch has several [configuration options](http://www.rubydoc.info/github/cinchrb/cinch/file/docs/bot_options.md) that you may want to set. To do this, assign a proc/lambda to `config.adapters.irc.cinch`. lita-irc will yield the Cinch configuration object to the proc, so you can configure it as you'd like. Note that for the options listed in the sections above, those values will overwrite anything set in the proc.
+
+**Note**: `config.robot.name` is used as Lita's IRC nickname. The `nick` attribute of the Cinch options is overwritten with this value.
 
 ### Example
 
