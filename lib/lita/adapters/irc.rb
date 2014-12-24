@@ -104,14 +104,24 @@ module Lita
         end
       end
 
+      def send_message_to_target(target, string)
+        string_without_action = string.gsub(/^\/me\s+/i, "")
+
+        if string == string_without_action
+          target.msg(string)
+        else
+          target.action(string_without_action)
+        end
+      end
+
       def send_messages_to_channel(target, strings)
         channel = Cinch::Channel.new(target.room, cinch)
-        strings.each { |s| channel.msg(s) }
+        strings.each { |string| send_message_to_target(channel, string) }
       end
 
       def send_messages_to_user(target, strings)
         user = Cinch::User.new(target.user.name, cinch)
-        strings.each { |s| user.msg(s) }
+        strings.each { |string| send_message_to_target(user, string) }
       end
     end
 

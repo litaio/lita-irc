@@ -77,6 +77,14 @@ describe Lita::Adapters::IRC, lita: true do
       subject.send_messages(source, ["Hello!", "How are you?"])
     end
 
+    it "sends actions to rooms" do
+      source = instance_double("Lita::Source", room: "#foo", private_message?: false)
+      channel = instance_double("Cinch::Channel")
+      allow(Cinch::Channel).to receive(:new).with("#foo", subject.cinch).and_return(channel)
+      expect(channel).to receive(:action).with("greets you")
+      subject.send_messages(source, ["/me greets you"])
+    end
+
     it "sends messages to users" do
       user = instance_double("Lita::User", name: "Carl")
       source = instance_double("Lita::Source", user: user, private_message?: true)
@@ -85,6 +93,15 @@ describe Lita::Adapters::IRC, lita: true do
       expect(user).to receive(:msg).with("Hello!")
       expect(user).to receive(:msg).with("How are you?")
       subject.send_messages(source, ["Hello!", "How are you?"])
+    end
+
+    it "sends actions to users" do
+      user = instance_double("Lita::User", name: "Carl")
+      source = instance_double("Lita::Source", user: user, private_message?: true)
+      user = instance_double("Cinch::User")
+      allow(Cinch::User).to receive(:new).with("Carl", subject.cinch).and_return(user)
+      expect(user).to receive(:action).with("greets you")
+      subject.send_messages(source, ["/me greets you"])
     end
   end
 
