@@ -47,11 +47,9 @@ module Lita
 
       def send_messages(target, strings)
         if target.private_message?
-          user = Cinch::User.new(target.user.name, cinch)
-          strings.each { |s| user.msg(s) }
+          send_messages_to_user(target, strings)
         else
-          channel = Cinch::Channel.new(target.room, cinch)
-          strings.each { |s| channel.msg(s) }
+          send_messages_to_channel(target, strings)
         end
       end
 
@@ -104,6 +102,16 @@ module Lita
           cinch_config.plugins.plugins = [CinchPlugin]
           cinch_config.plugins.options[CinchPlugin] = { robot: robot }
         end
+      end
+
+      def send_messages_to_channel(target, strings)
+        channel = Cinch::Channel.new(target.room, cinch)
+        strings.each { |s| channel.msg(s) }
+      end
+
+      def send_messages_to_user(target, strings)
+        user = Cinch::User.new(target.user.name, cinch)
+        strings.each { |s| user.msg(s) }
       end
     end
 
