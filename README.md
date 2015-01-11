@@ -34,12 +34,17 @@ Under the hood, lita-irc uses [Cinch](https://github.com/cinchrb/cinch) for the 
 
 **Note**: `config.robot.name` is used as Lita's IRC nickname. The `nick` attribute of the Cinch options is overwritten with this value.
 
+### config.robot.admins
+
+Each IRC user has a unique ID that Lita generates and stores the first time that user is encountered. To populate the `config.robot.admins` attribute, you'll need to use these IDs for each user you want to mark as an administrator. If you're using Lita version 4.1 or greater, you can get a user's ID by sending Lita the command `users find NICKNAME_OF_USER`.
+
 ### Example
 
 ``` ruby
 Lita.configure do |config|
   config.robot.name = "Lita"
   config.robot.adapter = :irc
+  config.robot.admins = ["eed844bf-2df0-4091-943a-7ee05ef36f4a"]
   config.adapters.irc.server = "irc.freenode.net"
   config.adapters.irc.channels = ["#litabot"]
   config.adapters.irc.user = "Lita"
