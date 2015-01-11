@@ -72,8 +72,8 @@ describe Lita::Adapters::IRC, lita: true do
       source = instance_double("Lita::Source", room: "#foo", private_message?: false)
       channel = instance_double("Cinch::Channel")
       allow(Cinch::Channel).to receive(:new).with("#foo", subject.cinch).and_return(channel)
-      expect(channel).to receive(:msg).with("Hello!")
-      expect(channel).to receive(:msg).with("How are you?")
+      expect(channel).to receive(:send).with("Hello!")
+      expect(channel).to receive(:send).with("How are you?")
       subject.send_messages(source, ["Hello!", "How are you?"])
     end
 
@@ -90,8 +90,8 @@ describe Lita::Adapters::IRC, lita: true do
       source = instance_double("Lita::Source", user: user, private_message?: true)
       user = instance_double("Cinch::User")
       allow(Cinch::User).to receive(:new).with("Carl", subject.cinch).and_return(user)
-      expect(user).to receive(:msg).with("Hello!")
-      expect(user).to receive(:msg).with("How are you?")
+      expect(user).to receive(:send).with("Hello!")
+      expect(user).to receive(:send).with("How are you?")
       subject.send_messages(source, ["Hello!", "How are you?"])
     end
 

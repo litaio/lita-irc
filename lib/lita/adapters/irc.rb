@@ -108,7 +108,7 @@ module Lita
         string_without_action = string.gsub(/^\/me\s+/i, "")
 
         if string == string_without_action
-          target.msg(string)
+          target.send(string)
         else
           target.action(string_without_action)
         end
