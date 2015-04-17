@@ -99,7 +99,8 @@ module Lita
       def register_plugin
         cinch.configure do |cinch_config|
           cinch_config.plugins.prefix = nil
-          cinch_config.plugins.plugins = [CinchPlugin]
+          cinch_config.plugins.plugins ||= []
+          cinch_config.plugins.plugins += [CinchPlugin]
           cinch_config.plugins.options[CinchPlugin] = { robot: robot }
         end
       end
