@@ -9,6 +9,7 @@ module Lita
         match /.*/
         listen_to :connect, method: :on_connect
         listen_to :invite, method: :on_invite
+        listen_to :join, method: :on_room_join
 
         def execute(m)
           body = get_body(m)
@@ -25,6 +26,14 @@ module Lita
         def on_invite(m)
           user = user_by_nick(m.user.nick)
           m.channel.join if robot.auth.user_is_admin?(user)
+        end
+
+        def on_room_join(m)
+          robot.trigger(
+            :user_joined_room,
+            user: user_by_nick(m.user.nick),
+            room: Lita::Room.find_by_name(m.channel.name),
+          )
         end
 
         private

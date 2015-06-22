@@ -58,7 +58,13 @@ end
 
 ## Events
 
-The IRC adapter will trigger the `:connected` and `:disconnected` events when the robot has connected and disconnected from IRC, respectively. There is no payload data for either event.
+The IRC adapter will trigger these events:
+
+| Event                  | When                      | Payload                                |
+|------------------------|---------------------------|----------------------------------------|
+| `:connected`           | connected to IRC          | None                                   |
+| `:disconnected`        | disconnected from IRC     | None                                   |
+| `:user_joined_room`    | a user joins a room       | `user: Lita::User`, `room: Lita::Room` |
 
 ## License
 
