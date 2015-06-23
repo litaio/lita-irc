@@ -115,6 +115,16 @@ describe Lita::Adapters::IRC, lita: true do
     end
   end
 
+  describe "#op" do
+    it "ops a user in the room" do
+      source = instance_double("Lita::Source", room: "#foo")
+      channel = instance_double("Cinch::Channel")
+      expect(Cinch::Channel).to receive(:op).with("#foo", subject.cinch).and_return(channel)
+      expect(channel).to receive(:op).with("Carl")
+      subject.op(source, "Carl")
+    end
+  end
+
   describe "#shut_down" do
     it "disconnects from IRC" do
       expect(subject.cinch).to receive(:quit)
