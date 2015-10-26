@@ -32,7 +32,7 @@ module Lita
         def dispatch(message)
           channel_text = " in #{message.source.room}" if message.source.room
           Lita.logger.debug(<<-MSG.chomp
-Dispatching message '#{message.body}' to Lita from #{message.source.user.name}#{channel_text}.
+#{channel_text}>[#{message.source.user.name}] #{message.body}
 MSG
           )
           robot.receive(message)
