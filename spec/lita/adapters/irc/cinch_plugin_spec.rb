@@ -9,6 +9,7 @@ describe Lita::Adapters::IRC::CinchPlugin do
   let(:user) { double("Lita::User", name: "Carl") }
   let(:message) { double("Lita::Message", command!: nil, source: source) }
   let(:source) { double("Lita::Source", room: "#channel", user: user) }
+  let(:room) { double("Lita::Room", name: "#channel") }
   let(:m) do
     instance_double(
       "Cinch::Message",
@@ -79,6 +80,22 @@ describe Lita::Adapters::IRC::CinchPlugin do
     it "ignores the invite if it didn't come from an admin" do
       expect(invite_m.channel).not_to receive(:join)
       subject.on_invite(invite_m)
+    end
+  end
+
+  describe "#on_room_join" do
+    before do
+      allow(Lita::Room).to receive(:find_by_name).and_return(room)
+      allow(Lita::User).to receive(:find_by_name).and_return(user)
+    end
+
+    it "triggers a join event when someone joins a channel" do
+      expect(robot).to receive(:trigger).with(
+        :user_joined_room,
+        user: user,
+        room: room,
+      )
+      subject.on_room_join(m)
     end
   end
 end
