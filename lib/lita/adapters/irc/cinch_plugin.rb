@@ -32,7 +32,7 @@ module Lita
           robot.trigger(
             :user_joined_room,
             user: user_by_nick(m.user.nick),
-            room: Lita::Room.find_by_name(m.channel.name),
+            room: Lita::Room.create_or_update(m.channel.name, name: m.channel.name),
           )
         end
 
