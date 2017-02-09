@@ -85,7 +85,7 @@ describe Lita::Adapters::IRC::CinchPlugin do
 
   describe "#on_room_join" do
     before do
-      allow(Lita::Room).to receive(:find_by_name).and_return(room)
+      allow(Lita::Room).to receive(:create_or_update).and_return(room)
       allow(Lita::User).to receive(:find_by_name).and_return(user)
     end
 
