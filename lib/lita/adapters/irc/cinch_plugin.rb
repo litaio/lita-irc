@@ -10,6 +10,9 @@ module Lita
         listen_to :connect, method: :on_connect
         listen_to :invite, method: :on_invite
         listen_to :join, method: :on_room_join
+        listen_to :part, method: :on_room_part
+        listen_to :quit, method: :on_quit
+        listen_to :nick, method: :on_nick_change
 
         def execute(m)
           body = get_body(m)
@@ -33,6 +36,29 @@ module Lita
             :user_joined_room,
             user: user_by_nick(m.user.nick),
             room: Lita::Room.create_or_update(m.channel.name, name: m.channel.name),
+          )
+        end
+
+        def on_room_part(m)
+          robot.trigger(
+            :user_parted_room,
+            user: user_by_nick(m.user.nick),
+            room: Lita::Room.create_or_update(m.channel.name, name: m.channel.name),
+          )
+        end
+
+        def on_quit(m)
+          robot.trigger(
+            :user_disconnected,
+            user: user_by_nick(m.user.nick),
+          )
+        end
+
+        def on_nick_change(m)
+          robot.trigger(
+            :user_nick_changed,
+            old_user: user_by_nick(m.prefix.gsub(/!.*/, '')),
+            user: user_by_nick(m.user.nick),
           )
         end
 
