@@ -9,7 +9,8 @@ module Lita
       # Required attributes
       config :channels, type: [Array, String], required: true
       config :server, type: String, required: true
-
+      config :port, type: String, required: false
+      
       # Optional attributes
       config :user, type: String, default: "Lita"
       config :password, type: String
@@ -80,6 +81,7 @@ module Lita
 
           cinch_config.channels = channels
           cinch_config.server = config.server
+          cinch_config.port = config.port
           cinch_config.nick = robot.config.robot.name
 
           cinch_config.user = config.user if config.user
