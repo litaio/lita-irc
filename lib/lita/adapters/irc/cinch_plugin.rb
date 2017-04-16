@@ -67,7 +67,7 @@ MSG
 
         def user_by_nick(nick)
           Lita.logger.debug("Looking up user with nick: #{nick}.")
-          User.find_by_name(nick) || User.create(SecureRandom.uuid, name: nick)
+          User.find_by_name(nick) || User.create(nick)
         end
       end
     end
