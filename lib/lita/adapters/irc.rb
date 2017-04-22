@@ -66,6 +66,30 @@ module Lita
         robot.trigger(:disconnected)
       end
 
+      def op(target, user)
+        channel = cinch.channel_list.find_ensured(target.room)
+        Lita.logger.debug("Oping user #{user} in channel #{target.room}")
+        channel.op(user)
+      end
+
+      def deop(target, user)
+        channel = cinch.channel_list.find_ensured(target.room)
+        Lita.logger.debug("Deoping user #{user} in channel #{target.room}")
+        channel.deop(user)
+      end
+
+      def voice(target, user)
+        channel = cinch.channel_list.find_ensured(target.room)
+        Lita.logger.debug("Voiceing user #{user} in channel #{target.room}")
+        channel.voice(user)
+      end
+
+      def devoice(target, user)
+        channel = cinch.channel_list.find_ensured(target.room)
+        Lita.logger.debug("Devoiceing user #{user} in channel #{target.room}")
+        channel.devoice(user)
+      end
+
       private
 
       def channels
