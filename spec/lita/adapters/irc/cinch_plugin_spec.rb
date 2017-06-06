@@ -7,6 +7,8 @@ describe Lita::Adapters::IRC::CinchPlugin do
   let(:robot) { double("Lita::Robot", auth: authorization) }
   let(:cinch) { double("Cinch::Bot").as_null_object }
   let(:user) { double("Lita::User", name: "Carl") }
+  let(:old_user) { double("Lita::User", name: "Dora") }
+  let(:prefix) { "#{old_user.name}!#{old_user.name.downcase}@localhost" }
   let(:message) { double("Lita::Message", command!: nil, source: source) }
   let(:source) { double("Lita::Source", room: "#channel", user: user) }
   let(:room) { double("Lita::Room", name: "#channel") }
@@ -17,6 +19,7 @@ describe Lita::Adapters::IRC::CinchPlugin do
       message: "bar",
       action?: false,
       channel: cinch_channel,
+      prefix: prefix,
       user: cinch_user
     )
   end
@@ -96,6 +99,53 @@ describe Lita::Adapters::IRC::CinchPlugin do
         room: room,
       )
       subject.on_room_join(m)
+    end
+  end
+
+  describe "#on_room_part" do
+    before do
+      allow(Lita::Room).to receive(:create_or_update).and_return(room)
+      allow(Lita::User).to receive(:find_by_name).and_return(user)
+    end
+
+    it "triggers a part event when someone parts a channel" do
+      expect(robot).to receive(:trigger).with(
+        :user_parted_room,
+        user: user,
+        room: room,
+      )
+      subject.on_room_part(m)
+    end
+  end
+
+  describe "#on_quit" do
+    before do
+      allow(Lita::User).to receive(:find_by_name).and_return(user)
+    end
+
+    it "triggers a disconnect event when someone quits from the IRC server" do
+      expect(robot).to receive(:trigger).with(
+        :user_disconnected,
+        user: user,
+      )
+      subject.on_quit(m)
+    end
+  end
+
+  describe "#on_nick_change" do
+    before do
+      allow(Lita::User).to receive(:find_by_name).with(user.name).and_return(user)
+      allow(Lita::User).to receive(:find_by_name).with(old_user.name).and_return(old_user)
+    end
+
+    it "triggers a nick changed event when someone changes nick" do
+      expect(robot).to receive(:trigger).with(
+        :user_nick_changed,
+        old_user: old_user,
+        user: user,
+      )
+      expect(old_user.name).to eq("Dora")
+      subject.on_nick_change(m)
     end
   end
 end

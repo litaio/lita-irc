@@ -60,11 +60,14 @@ end
 
 The IRC adapter will trigger these events:
 
-| Event                  | When                      | Payload                                |
-|------------------------|---------------------------|----------------------------------------|
-| `:connected`           | connected to IRC          | None                                   |
-| `:disconnected`        | disconnected from IRC     | None                                   |
-| `:user_joined_room`    | a user joins a room       | `user: Lita::User`, `room: Lita::Room` |
+| Event                  | When                      | Payload                                     |
+|------------------------|---------------------------|---------------------------------------------|
+| `:connected`           | connected to IRC          | None                                        |
+| `:disconnected`        | disconnected from IRC     | None                                        |
+| `:user_joined_room`    | a user joins a room       | `user: Lita::User`, `room: Lita::Room`      |
+| `:user_parted_room`    | a user parts a room       | `user: Lita::User`, `room: Lita::Room`      |
+| `:user_disconnected`   | a user disconnects        | `user: Lita::User`                          |
+| `:user_nick_changed`   | a user changes nick       | `user: Lita::User`, `old_user: Lita::User`  |
 
 ## License
 
