@@ -1,8 +1,7 @@
 # lita-irc
 
-[![Build Status](https://travis-ci.org/jimmycuadra/lita-irc.png?branch=master)](https://travis-ci.org/jimmycuadra/lita-irc)
-[![Code Climate](https://codeclimate.com/github/jimmycuadra/lita-irc.png)](https://codeclimate.com/github/jimmycuadra/lita-irc)
-[![Coverage Status](https://coveralls.io/repos/jimmycuadra/lita-irc/badge.png)](https://coveralls.io/r/jimmycuadra/lita-irc)
+[![Gem Version](https://badge.fury.io/rb/lita-irc.svg)](https://rubygems.org/gems/lita-irc)
+[![Build Status](https://travis-ci.com/litaio/lita-irc.svg?branch=main)](https://travis-ci.com/litaio/lita-irc)
 
 **lita-irc** is an adapter for [Lita](https://github.com/jimmycuadra/lita) that allows you to use the robot with IRC.
 
@@ -71,4 +70,4 @@ The IRC adapter will trigger these events:
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+[MIT](https://opensource.org/licenses/MIT)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "cinch"
 
 require "lita"
@@ -58,6 +60,7 @@ module Lita
         channel = Cinch::Channel.new(target.room, cinch)
         Lita.logger.debug("Setting topic for channel #{room}: #{topic}")
         channel.topic = topic
+        nil
       end
 
       def shut_down
@@ -76,7 +79,7 @@ module Lita
         Lita.logger.debug("Configuring Cinch.")
 
         cinch.configure do |cinch_config|
-          config.cinch.call(cinch_config) if config.cinch
+          config.cinch&.call(cinch_config)
 
           cinch_config.channels = channels
           cinch_config.server = config.server
@@ -106,7 +109,7 @@ module Lita
       end
 
       def send_message_to_target(target, string)
-        string_without_action = string.gsub(/^\/me\s+/i, "")
+        string_without_action = string.gsub(%r{^/me\s+}i, "")
 
         if string == string_without_action
           target.send(string)

@@ -1,12 +1,9 @@
-require "simplecov"
-require "coveralls"
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
-]
-SimpleCov.start { add_filter "/spec/" }
+# frozen_string_literal: true
 
+# Generate code coverage metrics outside CI.
+unless ENV["CI"]
+  require "simplecov"
+  SimpleCov.start { add_filter "/spec/" }
+end
 require "lita-irc"
 require "lita/rspec"
-
-Lita.version_3_compatibility_mode = false

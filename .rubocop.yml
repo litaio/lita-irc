@@ -1,0 +1,53 @@
+AllCops:
+  NewCops: "enable"
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: "with_fixed_indentation"
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: "table"
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: "variable"
+Layout/LineLength:
+  Max: 100
+
+Lint/EmptyClass:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ParameterLists:
+  Max: 6
+
+Naming/FileName:
+  Enabled: false
+Naming/MethodParameterName:
+  Enabled: false
+Naming/VariableNumber:
+  EnforcedStyle: "snake_case"
+
+Style/Documentation:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/EachWithObject:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/SpecialGlobalVars:
+  Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: "double_quotes"
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: "double_quotes"
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false

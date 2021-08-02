@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "securerandom"
 
 module Lita
@@ -6,7 +8,7 @@ module Lita
       class CinchPlugin
         include Cinch::Plugin
 
-        match /.*/
+        match(/.*/)
         listen_to :connect, method: :on_connect
         listen_to :invite, method: :on_invite
         listen_to :join, method: :on_room_join
@@ -22,7 +24,7 @@ module Lita
           dispatch(message)
         end
 
-        def on_connect(m)
+        def on_connect(_m)
           robot.trigger(:connected)
         end
 
@@ -57,7 +59,7 @@ module Lita
         def on_nick_change(m)
           robot.trigger(
             :user_nick_changed,
-            old_user: user_by_nick(m.prefix.gsub(/!.*/, '')),
+            old_user: user_by_nick(m.prefix.gsub(/!.*/, "")),
             user: user_by_nick(m.user.nick),
           )
         end
@@ -66,10 +68,9 @@ module Lita
 
         def dispatch(message)
           channel_text = " in #{message.source.room}" if message.source.room
-          Lita.logger.debug(<<-MSG.chomp
-Dispatching message to Lita from #{message.source.user.name}#{channel_text}.
-MSG
-          )
+          Lita.logger.debug <<~MSG.chomp
+            Dispatching message to Lita from #{message.source.user.name}#{channel_text}.
+          MSG
           robot.receive(message)
         end
 
